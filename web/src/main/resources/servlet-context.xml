@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                                 http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                                 http://www.springframework.org/schema/beans
+                                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                                 http://www.springframework.org/schema/context
+                                 http://www.springframework.org/schema/context/spring-context.xsd
+                                 http://www.springframework.org/schema/rabbit
+                                 http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+    <annotation-driven />
+
+    <resources mapping="/resources/**" location="/resources/" />
+
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jspx" />
+    </beans:bean>
+
+    <beans:bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver" id="multipartResolver"/>
+
+    <!--<beans:bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
+        <!--<beans:property name="usePool" value="true"/>-->
+        <!--<beans:property name="hostName" value="172.29.12.85"/>-->
+        <!--<beans:property name="password" value="123456"/>-->
+        <!--<beans:property name="database" value="1"/>-->
+    <!--</beans:bean>-->
+
+    <!--<beans:bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
+        <!--<beans:property name="connectionFactory" ref="jedisConnFactory"/>-->
+    <!--</beans:bean>-->
+
+    <!--<rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>-->
+    <!--<rabbit:admin connection-factory="connectionFactory"/>-->
+    <!--<rabbit:queue id="RabbitListener" durable="true" auto-delete="false" exclusive="false" name="testQueue"/>-->
+    <!--<rabbit:fanout-exchange id="fanoutExchange" name="fanoutExchange">-->
+        <!--<rabbit:bindings>-->
+            <!--<rabbit:binding queue="testQueue"/>-->
+        <!--</rabbit:bindings>-->
+    <!--</rabbit:fanout-exchange>-->
+    <!-- 采用如下配置，IDEA 会出现无法找到RabbitTemplate Bean的报错信息，不影响运行-->
+    <!--<rabbit:template id="rabbitTemplate" exchange="fanoutExchange" connection-factory="connectionFactory" queue="testQueue"/>-->
+    <!--<rabbit:listener-container  acknowledge="auto" connection-factory="connectionFactory">-->
+    <!--<rabbit:listener-container  connection-factory="connectionFactory">-->
+        <!--<rabbit:listener ref="rabbitListener" queues="testQueue" method="hello"/>-->
+    <!--</rabbit:listener-container>-->
+
+    <!--<beans:bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate" >-->
+        <!--<beans:constructor-arg ref="connectionFactory" />-->
+        <!--<beans:property name="exchange" value="fanoutExchange" />-->
+        <!--<beans:property name="queue" value="testQueue"/>-->
+    <!--</beans:bean>-->
+
+    <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <beans:property name="persistenceUnitName" value="WeiXinService"/>
+        <beans:property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+    </beans:bean>
+    <!-- 配置事务管理器 -->
+    <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <beans:property name="entityManagerFactory" ref="entityManagerFactory" />
+    </beans:bean>
+    <!-- 启用 annotation事务-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 配置Spring Data JPA扫描目录-->
+    <jpa:repositories base-package="com.myf.weixin.repository.impl"/>
+    <!--<beans:bean id="accountRepository" class="com.myf.weixin.repository.impl.JpaAccountRepository"/>-->
+    <beans:bean id="accountService" class="com.myf.weixin.service.AccountService"/>
+    <context:component-scan base-package="com.myf.weixin.*" />
+</beans:beans>

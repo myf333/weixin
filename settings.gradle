@@ -1,0 +1,14 @@
+rootProject.name = 'weixin'
+
+include 'entity'
+
+include 'repository'
+
+include 'service'
+
+include 'util'
+
+include 'web'
+
+
+

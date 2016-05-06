@@ -1,0 +1,9 @@
+// jar包的名字
+archivesBaseName = 'entity'
+
+dependencies {
+    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    compile 'mysql:mysql-connector-java:6.0.2'
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+}

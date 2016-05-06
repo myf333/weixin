@@ -1,0 +1,55 @@
+apply plugin:"war"
+
+dependencies{
+    // 依赖 entity 模块
+    compile project(":entity")
+    compile project(":service")
+    compile project(":util")
+    compile(
+            "org.springframework:spring-webmvc:$springVersion",
+            "com.google.code.gson:gson:2.5",
+            "org.slf4j:slf4j-api:1.7.5",
+            "org.slf4j:slf4j-log4j12:1.7.5",
+            "log4j:log4j:1.2.7",
+            'org.springframework.amqp:spring-rabbit:1.5.4.RELEASE',
+            "org.springframework.data:spring-data-redis:1.6.2.RELEASE",
+            'mysql:mysql-connector-java:6.0.2',
+            'org.springframework.data:spring-data-jpa:1.10.1.RELEASE',
+            "org.hibernate:hibernate-core:$hibernateVersion",
+            "org.hibernate:hibernate-entitymanager:$hibernateVersion",
+            'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final',
+            'org.apache.commons:commons-pool2:2.4.2',
+            'redis.clients:jedis:2.8.0'
+
+    )
+    //系统提供的依赖
+    providedCompile(
+            "javax.servlet:javax.servlet-api:3.1.0",
+            "javax.servlet.jsp:jsp-api:2.2.1-b03",
+            "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1"
+    )
+}
+task jarWithoutResources(type: Jar) {
+    baseName project.name
+    from("$buildDir/classes/main")
+}
+war{
+    dependsOn jarWithoutResources
+    from("$projectDir/src/main/resources") {
+        include "*.*"
+        into("WEB-INF/classes")
+    }
+
+    from("$projectDir/src/main/resources/META-INF") {
+        include "*.xml"
+        into("WEB-INF/classes/META-INF")
+    }
+    classpath=classpath - sourceSets.main.output
+    classpath fileTree(dir:libsDir, include:"${project.name}-${version}.jar")
+}
+task('jarPath')<<{
+    configurations.runtime.resolve().each {
+        print it.toString()+";"
+    }
+    println();
+}  
