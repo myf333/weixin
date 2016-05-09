@@ -25,16 +25,23 @@
 
     <beans:bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver" id="multipartResolver"/>
 
-    <!--<beans:bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
-        <!--<beans:property name="usePool" value="true"/>-->
-        <!--<beans:property name="hostName" value="172.29.12.85"/>-->
-        <!--<beans:property name="password" value="123456"/>-->
-        <!--<beans:property name="database" value="1"/>-->
-    <!--</beans:bean>-->
+    <beans:bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <beans:property name="usePool" value="true"/>
+        <beans:property name="hostName" value="172.29.12.85"/>
+        <beans:property name="password" value="123456"/>
+        <beans:property name="database" value="2"/>
+    </beans:bean>
 
-    <!--<beans:bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
-        <!--<beans:property name="connectionFactory" ref="jedisConnFactory"/>-->
-    <!--</beans:bean>-->
+    <beans:bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <beans:property name="connectionFactory" ref="jedisConnFactory"/>
+    </beans:bean>
+
+    <rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <beans:bean id="amqpTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate" >
+        <beans:constructor-arg ref="connectionFactory" />
+    </beans:bean>
+    <rabbit:queue name="testQueue" durable="true" />
 
     <!--<rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>-->
     <!--<rabbit:admin connection-factory="connectionFactory"/>-->
