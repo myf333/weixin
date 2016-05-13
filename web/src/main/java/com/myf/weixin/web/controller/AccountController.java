@@ -3,6 +3,8 @@ package com.myf.weixin.web.controller;
 import com.myf.weixin.entity.Account;
 import com.myf.weixin.service.AccountService;
 import com.myf.weixin.util.EncryptUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,11 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    final Logger logger = LoggerFactory.getLogger(AccountController.class);
+
     @RequestMapping(value = "list",method = RequestMethod.GET)
     public @ResponseBody String getList(){
+        logger.info("list");
         List<Account> list = accountService.getAccountList();
         Gson gson=new Gson();
         return gson.toJson(list);

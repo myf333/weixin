@@ -21,6 +21,11 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    @Transactional
+    public Account updateAccount(Account account){
+        return accountRepository.save(account);
+    }
+
     public List<Account> getAccountList(){
         List<Account> list = new ArrayList<>();
         Iterator<Account> it = accountRepository.findAll().iterator();
@@ -29,5 +34,9 @@ public class AccountService {
 //        }
         it.forEachRemaining(list::add);
         return list;
+    }
+
+    public Account findAccountBySign(String sign){
+        return accountRepository.findByWeixinbindsign(sign);
     }
 }

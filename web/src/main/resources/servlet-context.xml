@@ -17,7 +17,7 @@
     <annotation-driven />
 
     <resources mapping="/resources/**" location="/resources/" />
-
+    <context:property-placeholder location="classpath:config.properties" />
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <beans:property name="prefix" value="/WEB-INF/views/" />
         <beans:property name="suffix" value=".jspx" />
@@ -27,16 +27,16 @@
 
     <beans:bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <beans:property name="usePool" value="true"/>
-        <beans:property name="hostName" value="172.29.12.85"/>
-        <beans:property name="password" value="123456"/>
-        <beans:property name="database" value="2"/>
+        <beans:property name="hostName" value="${redis.host}"/>
+        <beans:property name="password" value="${redis.pwd}"/>
+        <beans:property name="database" value="${redis.database}"/>
     </beans:bean>
 
     <beans:bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <beans:property name="connectionFactory" ref="jedisConnFactory"/>
     </beans:bean>
 
-    <rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>
+    <rabbit:connection-factory id="connectionFactory" host="${rabbit.host}" port="${rabbit.port}" username="${rabbit.username}" password="${rabbit.pwd}"/>
     <rabbit:admin connection-factory="connectionFactory"/>
     <beans:bean id="amqpTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate" >
         <beans:constructor-arg ref="connectionFactory" />
