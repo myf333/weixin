@@ -14,7 +14,7 @@ import java.util.Collections;
 public class CheckSignature {
     public static boolean Check(String signature, String timestamp, String nonce, String token)
     {
-        return signature == GetSignature(timestamp, nonce, token);
+        return signature.equals(GetSignature(timestamp, nonce, token));
     }
 
     public static String GetSignature(String timestamp, String nonce, String token)
@@ -25,7 +25,7 @@ public class CheckSignature {
         list.add(nonce);
         Collections.sort(list);
 
-        String arrString = StringUtils.join("", list.toArray());
+        String arrString = StringUtils.join(list.toArray());
         try {
             String sha1Arr = EncryptUtil.Encrypt(arrString, "SHA1", "UTF-8");
             return sha1Arr;

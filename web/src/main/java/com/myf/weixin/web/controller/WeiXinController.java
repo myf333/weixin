@@ -1,6 +1,8 @@
 package com.myf.weixin.web.controller;
 
+import com.google.gson.Gson;
 import com.myf.weixin.entity.Account;
+import com.myf.weixin.entity.weixin.PostModel;
 import com.myf.weixin.service.AccountService;
 import com.myf.weixin.util.CheckSignature;
 import org.slf4j.Logger;
@@ -39,5 +41,22 @@ public class WeiXinController {
         }else{
             return "验证签名失败";
         }
+    }
+
+    @RequestMapping(value = "index",method = RequestMethod.POST)
+    public @ResponseBody String WeiXinPost(PostModel model,String sign){
+        Gson gson=new Gson();
+        logger.info(gson.toJson(model)+"|"+sign);
+        Account account = accountService.findAccountBySign(sign);
+        if(account == null) return "用户不存在";
+        if(!CheckSignature.Check(model.getSignature(),model.getTimestamp(),model.getNonce(),account.getToken())) {
+            return "验证签名失败";
+        }
+        model.setAppId(account.getAppid());
+        model.setEncodingAESKey(account.getEncodingaeskey());
+        model.setToken(account.getToken());
+        model.setUserId(account.getId());
+
+        return "";
     }
 }
