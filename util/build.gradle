@@ -5,4 +5,5 @@ dependencies {
     compile "org.springframework.data:spring-data-redis:1.6.2.RELEASE"
     compile 'org.springframework.amqp:spring-rabbit:1.5.4.RELEASE'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'com.thoughtworks.xstream:xstream:1.4.9'
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.myf.weixin.entity.Account;
 import com.myf.weixin.entity.weixin.PostModel;
 import com.myf.weixin.service.AccountService;
+import com.myf.weixin.service.weixin.MessageHandler;
 import com.myf.weixin.util.CheckSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
 /**
  * Created by myf on 2016/5/13.
  */
@@ -22,6 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WeiXinController {
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     final Logger logger  =  LoggerFactory.getLogger(WeiXinController.class);
 
@@ -44,19 +51,30 @@ public class WeiXinController {
     }
 
     @RequestMapping(value = "index",method = RequestMethod.POST)
-    public @ResponseBody String WeiXinPost(PostModel model,String sign){
+    public @ResponseBody String WeiXinPost(PostModel model,@RequestParam String sign){
         Gson gson=new Gson();
         logger.info(gson.toJson(model)+"|"+sign);
         Account account = accountService.findAccountBySign(sign);
-        if(account == null) return "用户不存在";
+        if(account == null) {
+            logger.error("用户不存在");
+            return "用户不存在";
+        }
         if(!CheckSignature.Check(model.getSignature(),model.getTimestamp(),model.getNonce(),account.getToken())) {
+            logger.error("验证签名失败");
             return "验证签名失败";
         }
         model.setAppId(account.getAppid());
         model.setEncodingAESKey(account.getEncodingaeskey());
         model.setToken(account.getToken());
         model.setUserId(account.getId());
-
-        return "";
+        try {
+            MessageHandler messageHandler = new MessageHandler(request.getInputStream(), model);
+            messageHandler.execute();
+            logger.info(messageHandler.getResponse());
+            return messageHandler.getResponse();
+        }catch (IOException e){
+            logger.error(e.getMessage());
+            return "";
+        }
     }
 }

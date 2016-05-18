@@ -5,4 +5,5 @@ dependencies {
     // 依赖 entity 模块
     compile project(":entity")
     compile project(":repository")
+    compile project(":util")
 }
