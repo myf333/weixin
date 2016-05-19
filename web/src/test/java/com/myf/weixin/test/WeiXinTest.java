@@ -34,39 +34,4 @@ public class WeiXinTest {
         boolean isSignature = CheckSignature.Check(signature, timestamp, nonce, account.getToken());
         Assert.assertTrue(isSignature);
     }
-
-    @Test
-    public void testXmlParse(){
-        String xml = "<xml>\n" +
-                "<ToUserName><![CDATA[ddd]]></ToUserName>\n" +
-                "<Encrypt><![CDATA[你好呀]]></Encrypt>\n" +
-                //"<Encrypt2><![CDATA[dsdsdsdsd]]></Encrypt2>\n" +
-                "</xml>";
-
-        WEntity entity = XMLConvertUtil.convertToObject(WEntity.class, xml);
-        Assert.assertNotNull(entity);
-        String xml2 = XMLConvertUtil.toXML(WEntity.class,entity);
-        Assert.assertNotEquals("",xml2);
-    }
-
-    class WEntity{
-        private String ToUserName;
-        private String Encrypt;
-
-        public String getToUserName() {
-            return ToUserName;
-        }
-
-        public void setToUserName(String toUserName) {
-            ToUserName = toUserName;
-        }
-
-        public String getEncrypt() {
-            return Encrypt;
-        }
-
-        public void setEncrypt(String encrypt) {
-            Encrypt = encrypt;
-        }
-    }
 }

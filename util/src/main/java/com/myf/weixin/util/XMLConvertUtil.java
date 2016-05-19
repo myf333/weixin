@@ -9,13 +9,15 @@ public class XMLConvertUtil {
 
     @SuppressWarnings("unchecked")
     public static <T> T convertToObject(Class<T> clazz,String xml){
-        XStream xstream = new XStream();
+        //XStream xstream = new XStream();
+        XStream xstream = XStreamUtil.createXstream();
         xstream.alias("xml", clazz);
         return (T) xstream.fromXML(xml);
     }
 
     public static <T> String toXML(Class<T> clazz,T instance){
-        XStream xstream = new XStream();
+        //XStream xstream = new XStream();
+        XStream xstream = XStreamUtil.createXstream();
         xstream.alias("xml", clazz);
         return xstream.toXML(instance);
     }

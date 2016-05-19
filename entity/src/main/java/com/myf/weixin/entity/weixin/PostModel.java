@@ -8,6 +8,15 @@ public class PostModel {
     private String msg_signature;
     private String timestamp;
     private String nonce ;
+    private String encrypt_type;
+
+    public String getEncrypt_type() {
+        return encrypt_type;
+    }
+
+    public void setEncrypt_type(String encrypt_type) {
+        this.encrypt_type = encrypt_type;
+    }
 
     //以下信息不会出现在微信发过来的信息中，都是企业号后台需要设置（获取的）的信息，用于扩展传参使用
     private String token ;

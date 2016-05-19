@@ -6,6 +6,7 @@ import com.myf.weixin.entity.weixin.PostModel;
 import com.myf.weixin.service.AccountService;
 import com.myf.weixin.service.weixin.MessageHandler;
 import com.myf.weixin.util.CheckSignature;
+import com.qq.weixin.mp.aes.AesException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class WeiXinController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private HttpServletRequest request;
+//    @Autowired
+//    private HttpServletRequest request;
 
     final Logger logger  =  LoggerFactory.getLogger(WeiXinController.class);
 
@@ -50,8 +51,8 @@ public class WeiXinController {
         }
     }
 
-    @RequestMapping(value = "index",method = RequestMethod.POST)
-    public @ResponseBody String WeiXinPost(PostModel model,@RequestParam String sign){
+    @RequestMapping(value = "index",method = RequestMethod.POST,produces="text/plain;charset=UTF-8")
+    public @ResponseBody String WeiXinPost(PostModel model,@RequestParam String sign,HttpServletRequest request){
         Gson gson=new Gson();
         logger.info(gson.toJson(model)+"|"+sign);
         Account account = accountService.findAccountBySign(sign);
@@ -72,7 +73,7 @@ public class WeiXinController {
             messageHandler.execute();
             logger.info(messageHandler.getResponse());
             return messageHandler.getResponse();
-        }catch (IOException e){
+        }catch (IOException | AesException e){
             logger.error(e.getMessage());
             return "";
         }

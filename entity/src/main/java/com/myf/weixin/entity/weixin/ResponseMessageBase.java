@@ -1,11 +1,13 @@
 package com.myf.weixin.entity.weixin;
 
 import com.myf.weixin.entity.weixin.message.ResponseMessageText;
+import com.myf.weixin.util.XStreamCDATA;
 
 /**
  * Created by myf on 2016/5/18.
  */
 public class ResponseMessageBase extends MessageBase {
+    @XStreamCDATA
     private ResponseMsgType MsgType;
 
     public ResponseMsgType getMsgType() {

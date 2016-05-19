@@ -1,10 +1,14 @@
 package com.myf.weixin.entity.weixin;
 
+import com.myf.weixin.util.XStreamCDATA;
+
 /**
  * Created by myf on 2016/5/18.
  */
 public class MessageBase {
+    @XStreamCDATA
     private String ToUserName;
+    @XStreamCDATA
     private String FromUserName;
     private long CreateTime;
 
