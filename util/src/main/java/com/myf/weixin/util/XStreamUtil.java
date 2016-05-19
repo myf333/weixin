@@ -27,7 +27,11 @@ public class XStreamUtil {
                         super.startNode(name, clazz);
                         //业务处理，对于用XStreamCDATA标记的Field，需要加上CDATA标签
                         if(!name.equals("xml")){
-                            cdata = needCDATA(targetClass, name);
+                            if(clazz.getName().equals("java.lang.String")){//避免实体中list字段中包含的对象的字段不能正确标记的粗暴解决方案
+                                cdata = true;
+                            }else {
+                                cdata = needCDATA(targetClass, name);
+                            }
                         }else{
                             targetClass = clazz;
                         }

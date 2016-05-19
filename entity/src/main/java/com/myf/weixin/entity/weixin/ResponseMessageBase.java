@@ -1,5 +1,6 @@
 package com.myf.weixin.entity.weixin;
 
+import com.myf.weixin.entity.weixin.message.ResponseMessageNews;
 import com.myf.weixin.entity.weixin.message.ResponseMessageText;
 import com.myf.weixin.util.XStreamCDATA;
 
@@ -27,6 +28,7 @@ public class ResponseMessageBase extends MessageBase {
                 responseMessage = new ResponseMessageText();
                 break;
             case news:
+                responseMessage = new ResponseMessageNews();
                 break;
             case music:
                 break;
