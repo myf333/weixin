@@ -1,8 +1,11 @@
 package com.myf.weixin.entity.weixin.message;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Created by myf on 2016/5/19.
  */
+@XStreamAlias("Video")
 public class Video {
     private String MediaId ;
     private String Title;

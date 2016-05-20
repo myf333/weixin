@@ -1,10 +1,12 @@
 package com.myf.weixin.entity.weixin.message;
 
 import com.myf.weixin.util.XStreamCDATA;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Created by myf on 2016/5/19.
  */
+@XStreamAlias("Music")
 public class Music {
     @XStreamCDATA
     private String Title;

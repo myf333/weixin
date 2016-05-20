@@ -1,5 +1,9 @@
 package com.myf.weixin.entity.weixin;
 
+import com.myf.weixin.entity.weixin.message.ScanCodeInfo;
+import com.myf.weixin.entity.weixin.message.SendLocationInfo;
+import com.myf.weixin.entity.weixin.message.SendPicsInfo;
+
 /**
  * Created by myf on 2016/5/18.
  */
@@ -68,6 +72,35 @@ public class RequestMessage {
     private Integer ErrorCount;//发送失败的粉丝数
 
     //群发消息通知-----------------end
+
+    private ScanCodeInfo ScanCodeInfo;//扫描信息
+    private SendPicsInfo SendPicsInfo;//发送的图片信息
+
+    public SendLocationInfo getSendLocationInfo() {
+        return SendLocationInfo;
+    }
+
+    public void setSendLocationInfo(SendLocationInfo sendLocationInfo) {
+        SendLocationInfo = sendLocationInfo;
+    }
+
+    private SendLocationInfo SendLocationInfo;//发送的位置信息
+
+    public SendPicsInfo getSendPicsInfo() {
+        return SendPicsInfo;
+    }
+
+    public void setSendPicsInfo(SendPicsInfo sendPicsInfo) {
+        SendPicsInfo = sendPicsInfo;
+    }
+
+    public ScanCodeInfo getScanCodeInfo() {
+        return ScanCodeInfo;
+    }
+
+    public void setScanCodeInfo(ScanCodeInfo scanCodeInfo) {
+        ScanCodeInfo = scanCodeInfo;
+    }
 
     public String getToUserName() {
         return ToUserName;

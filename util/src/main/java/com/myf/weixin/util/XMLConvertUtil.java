@@ -12,6 +12,7 @@ public class XMLConvertUtil {
         //XStream xstream = new XStream();
         XStream xstream = XStreamUtil.createXstream();
         xstream.alias("xml", clazz);
+        xstream.autodetectAnnotations(true);
         return (T) xstream.fromXML(xml);
     }
 

@@ -2,6 +2,7 @@ package com.myf.weixin.test;
 
 import com.myf.weixin.entity.Account;
 import com.myf.weixin.entity.weixin.PostModel;
+import com.myf.weixin.entity.weixin.RequestMessage;
 import com.myf.weixin.entity.weixin.RequestMsgType;
 import com.myf.weixin.service.AccountService;
 import com.myf.weixin.service.weixin.MessageHandler;
@@ -55,5 +56,50 @@ public class WeiXinTest {
         handler.execute();
         String res = handler.getResponse();
         Assert.assertNotEquals("",res);
+    }
+
+    @Test
+    public void testWeiXinRequestMessage(){
+        String xml = "<xml><ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>\n" +
+                "<FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>\n" +
+                "<CreateTime>1408090816</CreateTime>\n" +
+                "<MsgType><![CDATA[event]]></MsgType>\n" +
+                "<Event><![CDATA[pic_weixin]]></Event>\n" +
+                "<EventKey><![CDATA[6]]></EventKey>\n" +
+                "<SendPicsInfo><Count>1</Count>\n" +
+                "<PicList><item><PicMd5Sum><![CDATA[5a75aaca956d97be686719218f275c6b]]></PicMd5Sum>\n" +
+                "</item>\n" +
+                "</PicList>\n" +
+                "</SendPicsInfo>\n" +
+                "</xml>";
+        RequestMessage msg = XMLConvertUtil.convertToObject(RequestMessage.class,xml);
+        Assert.assertNotNull(msg);
+        xml = "<xml><ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>\n" +
+                "<FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>\n" +
+                "<CreateTime>1408091189</CreateTime>\n" +
+                "<MsgType><![CDATA[event]]></MsgType>\n" +
+                "<Event><![CDATA[location_select]]></Event>\n" +
+                "<EventKey><![CDATA[6]]></EventKey>\n" +
+                "<SendLocationInfo><Location_X><![CDATA[23]]></Location_X>\n" +
+                "<Location_Y><![CDATA[113]]></Location_Y>\n" +
+                "<Scale><![CDATA[15]]></Scale>\n" +
+                "<Label><![CDATA[ 广州市海珠区客村艺苑路 106号]]></Label>\n" +
+                "<Poiname><![CDATA[]]></Poiname>\n" +
+                "</SendLocationInfo>\n" +
+                "</xml>";
+        RequestMessage msg1 = XMLConvertUtil.convertToObject(RequestMessage.class,xml);
+        Assert.assertNotNull(msg1);
+        xml = "<xml><ToUserName><![CDATA[gh_e136c6e50636]]></ToUserName>\n" +
+                "<FromUserName><![CDATA[oMgHVjngRipVsoxg6TuX3vz6glDg]]></FromUserName>\n" +
+                "<CreateTime>1408090606</CreateTime>\n" +
+                "<MsgType><![CDATA[event]]></MsgType>\n" +
+                "<Event><![CDATA[scancode_waitmsg]]></Event>\n" +
+                "<EventKey><![CDATA[6]]></EventKey>\n" +
+                "<ScanCodeInfo><ScanType><![CDATA[qrcode]]></ScanType>\n" +
+                "<ScanResult><![CDATA[2]]></ScanResult>\n" +
+                "</ScanCodeInfo>\n" +
+                "</xml>";
+        RequestMessage msg2 = XMLConvertUtil.convertToObject(RequestMessage.class,xml);
+        Assert.assertNotNull(msg2);
     }
 }
