@@ -5,6 +5,7 @@
     <persistence-unit name="WeiXinService" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.myf.weixin.entity.Account</class>
+        <class>com.myf.weixin.entity.MediaInfo</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />

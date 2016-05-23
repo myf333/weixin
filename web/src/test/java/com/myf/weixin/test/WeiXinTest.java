@@ -3,7 +3,6 @@ package com.myf.weixin.test;
 import com.myf.weixin.entity.Account;
 import com.myf.weixin.entity.weixin.PostModel;
 import com.myf.weixin.entity.weixin.RequestMessage;
-import com.myf.weixin.entity.weixin.RequestMsgType;
 import com.myf.weixin.service.AccountService;
 import com.myf.weixin.service.weixin.MessageHandler;
 import com.myf.weixin.util.CheckSignature;
@@ -26,6 +25,9 @@ import java.io.ByteArrayInputStream;
 public class WeiXinTest {
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private MessageHandler messageHandler;
 
     @Test
     public void testWeiXinSign(){
@@ -52,9 +54,11 @@ public class WeiXinTest {
                 " <MediaId><![CDATA[media_id]]></MediaId>\n" +
                 " <MsgId>1234567890123456</MsgId>\n" +
                 " </xml>";
-        MessageHandler handler = new MessageHandler( new ByteArrayInputStream(xml.getBytes()),new PostModel());
-        handler.execute();
-        String res = handler.getResponse();
+        //MessageHandler handler = new MessageHandler( new ByteArrayInputStream(xml.getBytes()),new PostModel());
+        messageHandler.setModel(new PostModel());
+        messageHandler.Init( new ByteArrayInputStream(xml.getBytes()));
+        messageHandler.execute();
+        String res = messageHandler.getResponse();
         Assert.assertNotEquals("",res);
     }
 

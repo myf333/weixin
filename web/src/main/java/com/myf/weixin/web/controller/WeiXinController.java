@@ -30,6 +30,8 @@ public class WeiXinController {
 
 //    @Autowired
 //    private HttpServletRequest request;
+    @Autowired
+    private MessageHandler messageHandler;
 
     final Logger logger  =  LoggerFactory.getLogger(WeiXinController.class);
 
@@ -69,7 +71,9 @@ public class WeiXinController {
         model.setToken(account.getToken());
         model.setUserId(account.getId());
         try {
-            MessageHandler messageHandler = new MessageHandler(request.getInputStream(), model);
+            //MessageHandler messageHandler = new MessageHandler(request.getInputStream(), model);
+            messageHandler.setModel(model);
+            messageHandler.Init(request.getInputStream());
             messageHandler.execute();
             logger.info(messageHandler.getResponse());
             return messageHandler.getResponse();

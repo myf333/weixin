@@ -1,19 +1,23 @@
 package com.myf.weixin.service.weixin;
 
+import com.myf.weixin.entity.MediaInfo;
 import com.myf.weixin.entity.weixin.*;
 import com.myf.weixin.entity.weixin.message.*;
+import com.myf.weixin.service.MediaInfoService;
 import com.myf.weixin.util.StreamUtil;
 import com.myf.weixin.util.XMLConvertUtil;
 import com.qq.weixin.mp.aes.AesException;
 import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by myf on 2016/5/18.
@@ -25,12 +29,22 @@ public class MessageHandler {
     final Logger logger  =  LoggerFactory.getLogger(MessageHandler.class);
     private boolean isEncrypt = false;
     WXBizMsgCrypt wxBizMsgCrypt;
+
+    @Autowired
+    private MediaInfoService mediaInfoService;
+
+    public void setModel(PostModel model) {
+        this.model = model;
+    }
+
+    public MessageHandler(){}
+
     public MessageHandler(InputStream stream,PostModel model){
         this.model = model;
         Init(stream);
     }
 
-    private void Init(InputStream stream){
+    public void Init(InputStream stream){
         try {
             if("aes".equals(model.getEncrypt_type())){
                 isEncrypt = true;
@@ -153,6 +167,16 @@ public class MessageHandler {
         list.add(item2);
         responseMessage.setArticleCount(list.size());
         responseMessage.setArticles(list);
+
+        //生产环境需要异步操作
+        MediaInfo info = new MediaInfo();
+        info.setAccountId(model.getUserId());
+        info.setMediatype(requestMessage.getMsgType());
+        info.setWxMediaId(requestMessage.getMediaId());
+        info.setMediaurl(requestMessage.getPicUrl());
+        info.setInputdate(new Date());
+        //MediaInfoService service = new MediaInfoService();
+        mediaInfoService.AddMediaInfo(info);
         return responseMessage;
     }
 
