@@ -6,4 +6,6 @@ dependencies {
     compile project(":entity")
     compile project(":repository")
     compile project(":util")
+
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
 }

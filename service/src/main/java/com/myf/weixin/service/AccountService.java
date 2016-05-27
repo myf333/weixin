@@ -1,7 +1,6 @@
 package com.myf.weixin.service;
 
 import com.myf.weixin.entity.Account;
-import com.myf.weixin.repository.core.AccountRepository;
 import com.myf.weixin.repository.impl.SpringJPAAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

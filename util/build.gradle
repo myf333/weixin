@@ -6,4 +6,6 @@ dependencies {
     compile 'org.springframework.amqp:spring-rabbit:1.5.4.RELEASE'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.thoughtworks.xstream:xstream:1.4.9'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile "com.google.code.gson:gson:2.5"
 }
