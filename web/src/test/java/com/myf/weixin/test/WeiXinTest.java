@@ -11,6 +11,7 @@ import com.qq.weixin.mp.aes.AesException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,6 +29,9 @@ public class WeiXinTest {
 
     @Autowired
     private MessageHandler messageHandler;
+
+    @Autowired
+    private BeanFactory beanFactory;
 
     @Test
     public void testWeiXinSign(){
@@ -55,10 +59,11 @@ public class WeiXinTest {
                 " <MsgId>1234567890123456</MsgId>\n" +
                 " </xml>";
         //MessageHandler handler = new MessageHandler( new ByteArrayInputStream(xml.getBytes()),new PostModel());
-        messageHandler.setModel(new PostModel());
-        messageHandler.Init( new ByteArrayInputStream(xml.getBytes()));
-        messageHandler.execute();
-        String res = messageHandler.getResponse();
+        MessageHandler messageHandler1 = beanFactory.getBean(MessageHandler.class);
+        messageHandler1.setModel(new PostModel());
+        messageHandler1.Init( new ByteArrayInputStream(xml.getBytes()));
+        messageHandler1.execute();
+        String res = messageHandler1.getResponse();
         Assert.assertNotEquals("",res);
     }
 

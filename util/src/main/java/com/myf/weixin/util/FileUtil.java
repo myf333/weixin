@@ -20,6 +20,9 @@ public class FileUtil {
         InputStream in = response.body().byteStream();
         byte[] buffer = new byte[2046];
         String contentDisposition = response.headers().get("Content-disposition");
+        if(null == contentDisposition || "".equals(contentDisposition)){
+            throw new IOException(String.format("获取媒体文件失败:%s",response.body().toString()));
+        }
         String[] strs = contentDisposition.split(";|=");
         String fileName = strs[2].replace("\"","");
         savePath = savePath+File.separator+ DateFormat.getDateInstance().format(new Date());

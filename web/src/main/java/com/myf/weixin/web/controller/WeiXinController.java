@@ -9,7 +9,9 @@ import com.myf.weixin.util.CheckSignature;
 import com.qq.weixin.mp.aes.AesException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,10 +30,13 @@ public class WeiXinController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private BeanFactory beanFactory;
+
 //    @Autowired
 //    private HttpServletRequest request;
-    @Autowired
-    private MessageHandler messageHandler;
+//    @Autowired
+//    private MessageHandler messageHandler;//由于Controller默认是singleton，所以messageHandler是共享的，会有问题
 
     final Logger logger  =  LoggerFactory.getLogger(WeiXinController.class);
 
@@ -72,6 +77,7 @@ public class WeiXinController {
         model.setUserId(account.getId());
         try {
             //MessageHandler messageHandler = new MessageHandler(request.getInputStream(), model);
+            MessageHandler messageHandler = beanFactory.getBean(MessageHandler.class);
             messageHandler.setModel(model);
             messageHandler.Init(request.getInputStream());
             messageHandler.execute();

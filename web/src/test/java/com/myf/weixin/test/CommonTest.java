@@ -1,6 +1,8 @@
 package com.myf.weixin.test;
 
 import com.myf.weixin.entity.weixin.RequestMessage;
+import com.myf.weixin.service.weixin.AccessTokenService;
+import com.myf.weixin.service.weixin.MediaService;
 import com.myf.weixin.util.XMLConvertUtil;
 import com.myf.weixin.util.XStreamCDATA;
 import com.qq.weixin.mp.aes.AesException;
@@ -8,6 +10,8 @@ import com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,6 +21,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:application.xml","classpath:servlet-context.xml"})
 public class CommonTest {
+    @Autowired
+    private AccessTokenService tokenService;
+
+    @Value("${media.savePath}")
+    private String savePath;
+
     @Test
     public void testXmlParse(){
         String xml = "<xml>\n" +
@@ -42,6 +52,16 @@ public class CommonTest {
         Assert.assertNotEquals("",xml);
         RequestMessage requestMessage = XMLConvertUtil.convertToObject(RequestMessage.class,xml);
         Assert.assertNotNull(requestMessage);
+    }
+
+    @Test
+    public void testMediaDownload() throws Exception{
+        String mediaId="ufrpyR2NLkPnbwyzMn13d_K3ZMtdtZlYZVcAg1jZfHPlmURXOOUBbPVY2p5zXKF3";
+        String appId = "wxc3063aee2db008c0";
+        String appSecret="b4b58f2cdecc3037ac56704796275a37";
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        String filePath = MediaService.getMedia(accessToken,mediaId,savePath);
+        Assert.assertNotNull(filePath);
     }
 
     class WEntity{

@@ -80,5 +80,13 @@
     <beans:bean id="accountService" class="com.myf.weixin.service.AccountService"/>
     <beans:bean id="mediaInfoService" class="com.myf.weixin.service.MediaInfoService"/>
     <beans:bean id="messageHandler" class="com.myf.weixin.service.weixin.MessageHandler" scope="prototype"/>
+    <beans:bean
+            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="locations">
+            <beans:list>
+                <beans:value>classpath:config.properties</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
     <context:component-scan base-package="com.myf.weixin.*" />
 </beans:beans>
