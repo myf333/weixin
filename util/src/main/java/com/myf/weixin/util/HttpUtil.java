@@ -3,6 +3,7 @@ package com.myf.weixin.util;
 import com.squareup.okhttp.*;
 
 import javax.net.ssl.*;
+import java.io.File;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -104,5 +105,27 @@ public class HttpUtil {
         Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("请求失败,code: " + response);
         return response;
+    }
+
+    public static String UploadFile(String url,Map<String,String> params,String formData,String fileName,String filePath) throws Exception{
+        MultipartBuilder  builder = new MultipartBuilder ().type(MultipartBuilder.FORM);
+        File file = new File(filePath);
+        builder.addFormDataPart(formData,fileName,RequestBody.create(MediaType.parse("application/octet-stream"), file));
+        if(params != null&&params.size()>0)
+        {
+            for (String param:
+                    params.keySet()) {
+                builder.addFormDataPart(param,params.get(param));
+            }
+        }
+        RequestBody fileBody = builder.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Accept", "text/json")
+                .post(fileBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) throw new IOException("请求失败,code: " + response);
+        return response.body().string();
     }
 }

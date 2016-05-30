@@ -1,5 +1,6 @@
 package com.myf.weixin.test;
 
+import com.myf.weixin.entity.weixin.media.*;
 import com.myf.weixin.entity.weixin.RequestMessage;
 import com.myf.weixin.service.weixin.AccessTokenService;
 import com.myf.weixin.service.weixin.MediaService;
@@ -62,6 +63,46 @@ public class CommonTest {
         String accessToken = tokenService.GetAccessToken(appId,appSecret);
         String filePath = MediaService.getMedia(accessToken,mediaId,savePath);
         Assert.assertNotNull(filePath);
+    }
+
+    @Test
+    public void testUploadMediaFile() throws Exception{
+        String appId = "wxc3063aee2db008c0";
+        String appSecret="b4b58f2cdecc3037ac56704796275a37";
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        MediaUploadRet res = MediaService.uploadMedia(accessToken, MediaType.image.toString(),"600x600.jpg", "d:\\600x600.jpg");
+        Assert.assertNotNull(res);
+        Assert.assertEquals("image", res.getType());
+    }
+
+    @Test
+    public void testUploadMaterialVideo() throws Exception{
+        String appId = "wxc3063aee2db008c0";
+        String appSecret="b4b58f2cdecc3037ac56704796275a37";
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        VideoUploadRequest info = new VideoUploadRequest();
+        info.setIntroduction("这是一条测试视频");
+        info.setTitle("测试音乐");
+        MaterialUploadRet res = MediaService.uploadMaterial(accessToken,MediaType.video.toString(),"ccc.mp4","d:\\ccc.mp4",info);
+        Assert.assertNotNull(res);
+    }
+
+    @Test
+    public void testUploadMaterialImage() throws Exception{
+        String appId = "wxc3063aee2db008c0";
+        String appSecret="b4b58f2cdecc3037ac56704796275a37";
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        MaterialUploadRet res = MediaService.uploadMaterial(accessToken, MediaType.image.toString(), "600x600.jpg", "d:\\600x600.jpg",null);
+        Assert.assertNotNull(res);
+    }
+
+    @Test
+    public void testUploadMediaImg() throws Exception{
+        String appId = "wxc3063aee2db008c0";
+        String appSecret="b4b58f2cdecc3037ac56704796275a37";
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        MediaUploadImgRet res = MediaService.uploadImg(accessToken,"600x600.jpg", "d:\\600x600.jpg");
+        Assert.assertNotNull(res);
     }
 
     class WEntity{

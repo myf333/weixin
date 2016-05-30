@@ -226,6 +226,23 @@ public class MessageHandler {
         video.setTitle("视频");
         video.setDescription("您发送的视频");
         responseMessage.setVideo(video);
+
+        MediaInfo info = new MediaInfo();
+        info.setAccountId(model.getUserId());
+        info.setMediatype(requestMessage.getMsgType());
+        info.setWxMediaId(requestMessage.getMediaId());
+        info.setMediaurl(requestMessage.getPicUrl());
+        info.setInputdate(new Date());
+        info = mediaInfoService.AddMediaInfo(info);
+
+        //写入消息队列，下载媒体文件
+        MediaQueueInfo queueInfo = new MediaQueueInfo();
+        queueInfo.setAccountId(info.getAccountId());
+        queueInfo.setMediaId(info.getId());
+        queueInfo.setWxMediaId(info.getWxMediaId());
+        Gson gson = new Gson();
+        rabbitUtil.sendData(MessageQueueType.mediaQueue.toString(),gson.toJson(queueInfo));
+
         return responseMessage;
     }
 
