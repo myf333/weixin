@@ -38,4 +38,8 @@ public class AccountService {
     public Account findAccountBySign(String sign){
         return accountRepository.findByWeixinbindsign(sign);
     }
+
+    public Account findOne(long id){
+        return accountRepository.findOne(id);
+    }
 }

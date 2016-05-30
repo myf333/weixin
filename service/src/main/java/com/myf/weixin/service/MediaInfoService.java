@@ -21,4 +21,8 @@ public class MediaInfoService {
         return mediaInfoRepository.save(mediaInfo);
     }
 
+    public MediaInfo findOne(long id){
+        return  mediaInfoRepository.findOne(id);
+    }
+
 }

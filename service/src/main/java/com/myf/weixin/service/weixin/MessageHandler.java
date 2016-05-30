@@ -1,9 +1,13 @@
 package com.myf.weixin.service.weixin;
 
+import com.google.gson.Gson;
 import com.myf.weixin.entity.MediaInfo;
 import com.myf.weixin.entity.weixin.*;
 import com.myf.weixin.entity.weixin.message.*;
+import com.myf.weixin.entity.weixin.queue.MediaQueueInfo;
+import com.myf.weixin.entity.weixin.queue.MessageQueueType;
 import com.myf.weixin.service.MediaInfoService;
+import com.myf.weixin.util.RabbitUtil;
 import com.myf.weixin.util.StreamUtil;
 import com.myf.weixin.util.XMLConvertUtil;
 import com.qq.weixin.mp.aes.AesException;
@@ -32,6 +36,9 @@ public class MessageHandler {
 
     @Autowired
     private MediaInfoService mediaInfoService;
+
+    @Autowired
+    private RabbitUtil rabbitUtil;
 
     public void setModel(PostModel model) {
         this.model = model;
@@ -168,15 +175,22 @@ public class MessageHandler {
         responseMessage.setArticleCount(list.size());
         responseMessage.setArticles(list);
 
-        //生产环境需要异步操作
         MediaInfo info = new MediaInfo();
         info.setAccountId(model.getUserId());
         info.setMediatype(requestMessage.getMsgType());
         info.setWxMediaId(requestMessage.getMediaId());
         info.setMediaurl(requestMessage.getPicUrl());
         info.setInputdate(new Date());
-        //MediaInfoService service = new MediaInfoService();
-        mediaInfoService.AddMediaInfo(info);
+        info = mediaInfoService.AddMediaInfo(info);
+
+        //写入消息队列，下载媒体文件
+        MediaQueueInfo queueInfo = new MediaQueueInfo();
+        queueInfo.setAccountId(info.getAccountId());
+        queueInfo.setMediaId(info.getId());
+        queueInfo.setWxMediaId(info.getWxMediaId());
+        Gson gson = new Gson();
+        rabbitUtil.sendData(MessageQueueType.mediaQueue.toString(),gson.toJson(queueInfo));
+
         return responseMessage;
     }
 

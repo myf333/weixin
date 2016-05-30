@@ -41,7 +41,13 @@
     <beans:bean id="amqpTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate" >
         <beans:constructor-arg ref="connectionFactory" />
     </beans:bean>
-    <rabbit:queue name="testQueue" durable="true" />
+    <rabbit:queue name="messageQueue" durable="true" />
+    <rabbit:queue name="mediaQueue" durable="true" />
+
+    <beans:bean id="mediaDownloadService" class="com.myf.weixin.service.queue.MediaDownloadService"/>
+    <rabbit:listener-container  connection-factory="connectionFactory">
+        <rabbit:listener ref="mediaDownloadService" queues="mediaQueue" method="downloadMedia"/>
+    </rabbit:listener-container>
 
     <!--<rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>-->
     <!--<rabbit:admin connection-factory="connectionFactory"/>-->

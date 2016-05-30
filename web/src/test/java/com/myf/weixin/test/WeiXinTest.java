@@ -55,12 +55,14 @@ public class WeiXinTest {
                 " <CreateTime>1348831860</CreateTime>\n" +
                 " <MsgType><![CDATA[image]]></MsgType>\n" +
                 " <PicUrl><![CDATA[this is a url]]></PicUrl>\n" +
-                " <MediaId><![CDATA[media_id]]></MediaId>\n" +
+                " <MediaId><![CDATA[ufrpyR2NLkPnbwyzMn13d_K3ZMtdtZlYZVcAg1jZfHPlmURXOOUBbPVY2p5zXKF3]]></MediaId>\n" +
                 " <MsgId>1234567890123456</MsgId>\n" +
                 " </xml>";
         //MessageHandler handler = new MessageHandler( new ByteArrayInputStream(xml.getBytes()),new PostModel());
         MessageHandler messageHandler1 = beanFactory.getBean(MessageHandler.class);
-        messageHandler1.setModel(new PostModel());
+        PostModel model = new PostModel();
+        model.setUserId(1);
+        messageHandler1.setModel(model);
         messageHandler1.Init( new ByteArrayInputStream(xml.getBytes()));
         messageHandler1.execute();
         String res = messageHandler1.getResponse();

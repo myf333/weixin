@@ -25,7 +25,8 @@ public class FileUtil {
         }
         String[] strs = contentDisposition.split(";|=");
         String fileName = strs[2].replace("\"","");
-        savePath = savePath+File.separator+ DateFormat.getDateInstance().format(new Date());
+        String filePath = DateFormat.getDateInstance().format(new Date());
+        savePath = savePath + File.separator+ filePath;
         File dir = new File(savePath);
         if(!dir.exists()){
             if(!dir.mkdir()) throw new IOException("创建目录失败");
@@ -38,6 +39,6 @@ public class FileUtil {
         }
         out.flush();
         out.close();
-        return  file.getPath();
+        return  filePath+File.separator+file.getName();
     }
 }
