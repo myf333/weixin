@@ -85,6 +85,18 @@ public class HttpUtil {
         return response.body().string();
     }
 
+    public static String postJson(String url,String jsonStr) throws Exception{
+        RequestBody jsonBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),jsonStr);
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Accept", "text/json")
+                .post(jsonBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        if(!response.isSuccessful()) throw new IOException("请求失败,code: " + response);
+        return response.body().string();
+    }
+
     public static Response Download(String url,Map<String,String> params) throws Exception {
         if(params!=null && params.size()>0){
             url += "?";
@@ -115,7 +127,7 @@ public class HttpUtil {
         {
             for (String param:
                     params.keySet()) {
-                builder.addFormDataPart(param,params.get(param));
+                builder.addFormDataPart(param,null, RequestBody.create(MediaType.parse("application/json; charset=utf-8"), params.get(param)));
             }
         }
         RequestBody fileBody = builder.build();

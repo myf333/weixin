@@ -6,9 +6,9 @@ import com.myf.weixin.entity.weixin.WxJsonResult;
  * Created by myf on 2016/5/30.
  */
 public class MediaUploadRet extends WxJsonResult {
-    private String type;
-    private String media_id;
-    private long created_at;
+    private String type;//媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb），图文消息（news）
+    private String media_id;//媒体文件/图文消息上传后获取的唯一标识
+    private long created_at;//媒体文件上传时间
 
     public String getType() {
         return type;
