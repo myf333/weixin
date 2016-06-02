@@ -92,4 +92,45 @@ public class UserService {
         return gson.fromJson(res,UserTagRet.class);
     }
 
+    /**
+     * 设置用户备注名 该接口暂时开放给微信认证的服务号
+     * **/
+    public static WxJsonResult updateRemark(String accessToken,String openId,String remark)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url, String.format("{\"openid\":\"%s\",\"remark\":\"%s\"}",openId,remark));
+        return gson.fromJson(res,WxJsonResult.class);
+    }
+
+    /**
+     * 获取用户基本信息（包括UnionID机制）
+     * **/
+    public static WxUserInfoRet getUserInfo(String accessToken,String openId)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN",accessToken,openId);
+        String res = HttpUtil.Get(url,null);
+        Gson gson = new Gson();
+        return gson.fromJson(res,WxUserInfoRet.class);
+    }
+
+    /**
+     * 批量获取用户基本信息
+     * 开发者可通过该接口来批量获取用户基本信息。最多支持一次拉取100条。
+     * **/
+    public static WxUserBatchRet getUserInfoBatch(String accessToken,BatchUserRequest request)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url,gson.toJson(request));
+        return gson.fromJson(res,WxUserBatchRet.class);
+    }
+
+    /**
+     * 公众号可通过本接口来获取帐号的关注者列表，关注者列表由一串OpenID（加密后的微信号，每个用户对每个公众号的OpenID是唯一的）组成。
+     * 一次拉取调用最多拉取10000个关注者的OpenID，可以通过多次拉取的方式来满足需求。
+     * **/
+    public static OpenIdListRet getOpenIdList(String accessToken,String openId)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/cgi-bin/user/get?access_token={0}&next_openid={1}",accessToken,openId);
+        String res = HttpUtil.Get(url,null);
+        Gson gson = new Gson();
+        return gson.fromJson(res,OpenIdListRet.class);
+    }
 }

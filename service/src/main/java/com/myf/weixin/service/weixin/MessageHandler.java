@@ -256,6 +256,8 @@ public class MessageHandler {
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
         responseMessage.setContent(String.format("您发送了一条地理位置信息消息，X:%s,Y:%s ",requestMessage.getLocation_X(),requestMessage.getLocation_Y()));
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
         return responseMessage;
     }
 
@@ -380,7 +382,9 @@ public class MessageHandler {
         //这里是微信客户端（通过微信服务器）自动发送过来的位置信息
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
-        responseMessage.setContent(MessageFormat.format("您当前的纬度：{0}，经度：{1},地图精度：{2}", requestMessage.getLatitude(), requestMessage.getLongitude(), requestMessage.getPrecision()));//生产应用时可记录到数据库
+        responseMessage.setContent("success");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));//生产应用时可记录到数据库
         return responseMessage;//这里也可以返回null（需要注意写日志时候null的问题）
     }
 
