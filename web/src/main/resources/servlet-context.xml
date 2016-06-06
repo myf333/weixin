@@ -85,6 +85,7 @@
     <!--<beans:bean id="accountRepository" class="com.myf.weixin.repository.impl.JpaAccountRepository"/>-->
     <beans:bean id="accountService" class="com.myf.weixin.service.AccountService"/>
     <beans:bean id="mediaInfoService" class="com.myf.weixin.service.MediaInfoService"/>
+    <beans:bean id="grantUserService" class="com.myf.weixin.service.GrantUserService"/>
     <beans:bean id="messageHandler" class="com.myf.weixin.service.weixin.MessageHandler" scope="prototype"/>
     <beans:bean
             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
