@@ -526,6 +526,8 @@ public class MessageHandler {
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
         responseMessage.setContent("接收到了模板消息发完成的信息。");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
         return responseMessage;
     }
 }
