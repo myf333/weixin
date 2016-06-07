@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by myf on 2016/6/6.
  */
-@Entity
+@Entity(name = "weixingrantuser")
 public class GrantUser {
     @Id
     private String openid;

@@ -19,8 +19,9 @@
     <resources mapping="/resources/**" location="/resources/" />
     <context:property-placeholder location="classpath:config.properties" />
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--<beans:property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
         <beans:property name="prefix" value="/WEB-INF/views/" />
-        <beans:property name="suffix" value=".jspx" />
+        <beans:property name="suffix" value=".jsp" />
     </beans:bean>
 
     <beans:bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver" id="multipartResolver"/>
@@ -48,27 +49,6 @@
     <rabbit:listener-container  connection-factory="connectionFactory">
         <rabbit:listener ref="mediaDownloadService" queues="mediaQueue" method="downloadMedia"/>
     </rabbit:listener-container>
-
-    <!--<rabbit:connection-factory id="connectionFactory" host="172.29.12.85" port="5672" username="guest" password="ltchina2014"/>-->
-    <!--<rabbit:admin connection-factory="connectionFactory"/>-->
-    <!--<rabbit:queue id="RabbitListener" durable="true" auto-delete="false" exclusive="false" name="testQueue"/>-->
-    <!--<rabbit:fanout-exchange id="fanoutExchange" name="fanoutExchange">-->
-        <!--<rabbit:bindings>-->
-            <!--<rabbit:binding queue="testQueue"/>-->
-        <!--</rabbit:bindings>-->
-    <!--</rabbit:fanout-exchange>-->
-    <!-- 采用如下配置，IDEA 会出现无法找到RabbitTemplate Bean的报错信息，不影响运行-->
-    <!--<rabbit:template id="rabbitTemplate" exchange="fanoutExchange" connection-factory="connectionFactory" queue="testQueue"/>-->
-    <!--<rabbit:listener-container  acknowledge="auto" connection-factory="connectionFactory">-->
-    <!--<rabbit:listener-container  connection-factory="connectionFactory">-->
-        <!--<rabbit:listener ref="rabbitListener" queues="testQueue" method="hello"/>-->
-    <!--</rabbit:listener-container>-->
-
-    <!--<beans:bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate" >-->
-        <!--<beans:constructor-arg ref="connectionFactory" />-->
-        <!--<beans:property name="exchange" value="fanoutExchange" />-->
-        <!--<beans:property name="queue" value="testQueue"/>-->
-    <!--</beans:bean>-->
 
     <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <beans:property name="persistenceUnitName" value="WeiXinService"/>

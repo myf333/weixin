@@ -13,9 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -89,5 +93,16 @@ public class OAuthController {
             }
         }
         return MessageFormat.format("redirect:{0}",url);
+    }
+
+    @RequestMapping("grantTest")
+    public String grantTest(Model model,@CookieValue(value = "openIdTest",defaultValue = "")String openId){
+        if(openId.equals("")){
+            String redirectUrl = "http://www.codingheart.net/wx/oauth/grantTest";
+            String url = MessageFormat.format("oauth?redirectUrl={0}&cookieName={1}&uid={2}",redirectUrl,"openIdTest",1);
+            return MessageFormat.format("redirect:{0}",url);
+        }
+        model.addAttribute("openId", openId);
+        return "grantTest";
     }
 }
