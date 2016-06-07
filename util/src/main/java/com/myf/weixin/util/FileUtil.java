@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,7 @@ public class FileUtil {
         }
         String[] strs = contentDisposition.split(";|=");
         String fileName = strs[2].replace("\"","");
-        String filePath = DateFormat.getDateInstance().format(new Date());
+        String filePath = DateFormat.getDateInstance(2,new Locale("zh", "CN")).format(new Date());
         savePath = savePath + File.separator+ filePath;
         File dir = new File(savePath);
         if(!dir.exists()){
