@@ -1,5 +1,6 @@
 package com.myf.weixin.web.controller;
 
+import com.google.gson.Gson;
 import com.myf.weixin.entity.Account;
 import com.myf.weixin.entity.GrantUser;
 import com.myf.weixin.entity.weixin.oauth.GrantUserInfoRet;
@@ -58,7 +59,7 @@ public class OAuthController {
         if(null != code && !"".equals(code)) {
             Account account = accountService.findOne(uid);
             if (account != null) {
-                OAuthAccessTokenResult result = OAuthService.getAccessToken(account.getAppid(), account.getApisecret(), code);
+                OAuthAccessTokenResult result = OAuthService.getAccessToken(account.getAppid(), account.getAppsecret(), code);
                 if (result.getErrcode() == 0) {
                     GrantUserInfoRet ret = OAuthService.getUserInfo(result.getAccess_token(),result.getOpenid());
                     if(ret.getErrcode() == 0){
@@ -96,10 +97,10 @@ public class OAuthController {
     }
 
     @RequestMapping("grantTest")
-    public String grantTest(Model model,@CookieValue(value = "openIdTest",defaultValue = "")String openId){
+    public String grantTest(Model model,@CookieValue(value = "weiXinOpenId",defaultValue = "")String openId) throws Exception{
         if(openId.equals("")){
             String redirectUrl = "http://www.codingheart.net/wx/oauth/grantTest";
-            String url = MessageFormat.format("oauth?redirectUrl={0}&cookieName={1}&uid={2}",redirectUrl,"openIdTest",1);
+            String url = MessageFormat.format("oauth?redirectUrl={0}&cookieName={1}&uid={2}",URLEncoder.encode(redirectUrl,"UTF-8"),"weiXinOpenId",1);
             return MessageFormat.format("redirect:{0}",url);
         }
         model.addAttribute("openId", openId);
