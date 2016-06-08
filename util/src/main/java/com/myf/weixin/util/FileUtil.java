@@ -50,7 +50,7 @@ public class FileUtil {
     public static String saveQrCodeFile(Response response,String savePath) throws IOException {
         InputStream in = response.body().byteStream();
         byte[] buffer = new byte[2046];
-        String filePath = DateFormat.getDateInstance().format(new Date());
+        String filePath = DateFormat.getDateInstance(2,new Locale("zh", "CN")).format(new Date());
         savePath = savePath + File.separator+ filePath;
         File dir = new File(savePath);
         if(!dir.exists()){

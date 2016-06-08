@@ -1,11 +1,14 @@
 package com.myf.weixin.entity.weixin.customservice;
 
 /**
- * Created by myf on 2016/6/7.
+ * Created by myf on 2016/6/8.
  */
-public class KFAccount {
+public class KFAccountItem {
     private String kf_account;
-    private String nickname;
+
+    public KFAccountItem(String kf_account) {
+        this.kf_account = kf_account;
+    }
 
     public String getKf_account() {
         return kf_account;
@@ -13,13 +16,5 @@ public class KFAccount {
 
     public void setKf_account(String kf_account) {
         this.kf_account = kf_account;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 }
