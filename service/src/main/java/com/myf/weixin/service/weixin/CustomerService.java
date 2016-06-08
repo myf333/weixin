@@ -2,10 +2,7 @@ package com.myf.weixin.service.weixin;
 
 import com.google.gson.Gson;
 import com.myf.weixin.entity.weixin.WxJsonResult;
-import com.myf.weixin.entity.weixin.customservice.CusMsgBase;
-import com.myf.weixin.entity.weixin.customservice.KFAccount;
-import com.myf.weixin.entity.weixin.customservice.KFListRet;
-import com.myf.weixin.entity.weixin.customservice.KFOnlineRet;
+import com.myf.weixin.entity.weixin.customservice.*;
 import com.myf.weixin.util.HttpUtil;
 
 import java.text.MessageFormat;
@@ -42,7 +39,7 @@ public class CustomerService {
     public static WxJsonResult delKFAccount(String accessToken,String kf_account)throws Exception{
         String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfaccount/del?access_token={0}&kf_account={1}",accessToken,kf_account);
         Gson gson = new Gson();
-        String res = HttpUtil.Get(url,null);
+        String res = HttpUtil.Get(url, null);
         return gson.fromJson(res,WxJsonResult.class);
     }
 
@@ -115,5 +112,64 @@ public class CustomerService {
         Gson gson = new Gson();
         String res = HttpUtil.postJson(url,gson.toJson(data));
         return gson.fromJson(res,WxJsonResult.class);
+    }
+
+    /**
+     *  创建会话
+     *  此接口在客服和用户之间创建一个会话，如果该客服和用户会话已存在，则直接返回0。指定的客服帐号必须已经绑定微信号且在线
+     *  kf_account  完整客服帐号，格式为：帐号前缀@公众号微信号
+     *  openid  粉丝的openid
+     * **/
+    public static WxJsonResult createKFSession(String accessToken,String kf_account,String openid)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfsession/create?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url, String.format("{\"kf_account\" : \"%s\",\"openid\" : \"%s\"}",kf_account,openid));
+        return gson.fromJson(res,WxJsonResult.class);
+    }
+
+    /**
+     *  关闭会话
+     *  此接口在客服和用户之间创建一个会话，如果该客服和用户会话已存在，则直接返回0。指定的客服帐号必须已经绑定微信号且在线
+     *  kf_account  完整客服帐号，格式为：帐号前缀@公众号微信号
+     *  openid  粉丝的openid
+     * **/
+    public static WxJsonResult closeKFSession(String accessToken,String kf_account,String openid)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfsession/close?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url, String.format("{\"kf_account\" : \"%s\",\"openid\" : \"%s\"}",kf_account,openid));
+        return gson.fromJson(res,WxJsonResult.class);
+    }
+
+    /**
+     *  获取客户会话状态
+     *  此接口获取一个客户的会话，如果不存在，则kf_account为空。
+     *  openid  粉丝的openid
+     * **/
+    public static KFSessionRet getSession(String accessToken,String openid)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfsession/getsession?access_token={0}&openid={1}",accessToken,openid);
+        Gson gson = new Gson();
+        String res = HttpUtil.Get(url, null);
+        return gson.fromJson(res,KFSessionRet.class);
+    }
+
+    /**
+     *  获取客服会话列表
+     *  kf_account 完整客服帐号，格式为：帐号前缀@公众号微信号
+     * **/
+    public static KFSessionListRet getSessionList(String accessToken,String kf_account)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfsession/getsessionlist?access_token={0}&kf_account={1}",accessToken,kf_account);
+        Gson gson = new Gson();
+        String res = HttpUtil.Get(url, null);
+        return gson.fromJson(res,KFSessionListRet.class);
+    }
+
+    /**
+     * 获取未接入会话列表
+     * **/
+    public static WaitCaseListRet getWaitCase(String accessToken)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/kfsession/getwaitcase?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.Get(url, null);
+        return gson.fromJson(res,WaitCaseListRet.class);
     }
 }

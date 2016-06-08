@@ -4,7 +4,6 @@ import com.myf.weixin.entity.weixin.WxJsonResult;
 import com.myf.weixin.entity.weixin.customservice.*;
 import com.myf.weixin.service.weixin.AccessTokenService;
 import com.myf.weixin.service.weixin.CustomerService;
-import com.myf.weixin.util.HttpUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +55,7 @@ public class CusMsgTest {
 
     @Test
     public void testAddKf()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         String weiXinCode = "ltjsfw";
         KFAccount account = new KFAccount();
         account.setKf_account("myf@"+weiXinCode);
@@ -74,11 +67,7 @@ public class CusMsgTest {
 
     @Test
     public void testInviteKf()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         String weiXinCode = "ltjsfw";
         String account = "myf@"+weiXinCode;
         WxJsonResult ret = CustomerService.inviteWorker(accessToken, account,"myf_feng");
@@ -87,33 +76,21 @@ public class CusMsgTest {
 
     @Test
     public void testKfList()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         KFListRet ret = CustomerService.getKFList(accessToken);
         Assert.assertNotNull(ret);
     }
 
     @Test
     public void testKfOnLineList()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         KFOnlineRet ret = CustomerService.getKFOnlineList(accessToken);
         Assert.assertNotNull(ret);
     }
 
     @Test
     public void testUpdateKf()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         String weiXinCode = "ltjsfw";
         KFAccount account = new KFAccount();
         account.setKf_account("myf@"+weiXinCode);
@@ -125,22 +102,14 @@ public class CusMsgTest {
 
     @Test
     public void testKfHeadImg()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         WxJsonResult ret = CustomerService.uploadHeadImg(accessToken,"myf@ltjsfw","600x600.jpg","d:\\600x600.jpg");
         Assert.assertNotNull(ret);
     }
 
     @Test
     public void testDelKf()throws Exception{
-        String url = MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret);
-        String accessToken = HttpUtil.Get(url,null);
-        Assert.assertNotNull(accessToken);
-        Assert.assertNotEquals("",accessToken);
-
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         WxJsonResult ret = CustomerService.delKFAccount(accessToken,"myf@ltjsfw");
         Assert.assertNotNull(ret);
     }
