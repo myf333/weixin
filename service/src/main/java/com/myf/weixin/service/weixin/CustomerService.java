@@ -172,4 +172,21 @@ public class CustomerService {
         String res = HttpUtil.Get(url, null);
         return gson.fromJson(res,WaitCaseListRet.class);
     }
+
+    /**
+     *  获取聊天记录
+     *  此接口返回的聊天记录中，对于图片、语音、视频，分别展示成文本格式的[image]、[voice]、[video]。
+     *  对于较可能包含重要信息的图片消息，后续将提供图片拉取URL，近期将上线。
+     *  starttime	起始时间，unix时间戳
+     *  endtime	结束时间，unix时间戳，每次查询时段不能超过24小时
+     *  pageindex	查询第几页，从1开始
+     *  pagesize	每页大小，最多50条
+     * **/
+    public static KFRecordRet getRecord(String accessToken,long startTime,long endTime,int pageIndex,int pageSize)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/customservice/msgrecord/getrecord?access_token={0}",accessToken);
+        String json = String.format("{\"starttime\" : %d,\"endtime\" : %d,\"pageindex\" : %d,\"pagesize\" : %d}",startTime,endTime,pageIndex,pageSize);
+        String res = HttpUtil.postJson(url,json);
+        Gson gson = new Gson();
+        return gson.fromJson(res,KFRecordRet.class);
+    }
 }
