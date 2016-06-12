@@ -89,6 +89,7 @@ public class MessageHandler {
                 xml = XMLConvertUtil.toXML(ResponseMessageVideo.class,(ResponseMessageVideo)responseMessage);
                 break;
             case transfer_customer_service:
+                xml = XMLConvertUtil.toXML(ResponseMessageCustomerService.class,(ResponseMessageCustomerService)responseMessage);
                 break;
             default:
                 break;
@@ -323,6 +324,9 @@ public class MessageHandler {
             case TEMPLATESENDJOBFINISH:
                 responseMessage = OnEvent_TemplateSendJobFinishRequest(requestMessage);
                 break;
+            case poi_check_notify:
+                responseMessage = OnEvent_PoiCheckNotify(requestMessage);
+                break;
             default:
                 break;
         }
@@ -523,6 +527,18 @@ public class MessageHandler {
     /// <returns></returns>
     public ResponseMessageText OnEvent_TemplateSendJobFinishRequest(RequestMessage requestMessage)
     {
+        ResponseMessageText responseMessage =
+                (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
+        responseMessage.setContent("接收到了模板消息发完成的信息。");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
+        return responseMessage;
+    }
+
+    /**
+     * 新增门店审核事件推送
+     * **/
+    public ResponseMessageText OnEvent_PoiCheckNotify(RequestMessage requestMessage){
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
         responseMessage.setContent("接收到了模板消息发完成的信息。");

@@ -76,6 +76,11 @@ public class RequestMessage {
     private ScanCodeInfo ScanCodeInfo;//扫描信息
     private SendPicsInfo SendPicsInfo;//发送的图片信息
 
+    private String UniqId;//		商户自己内部ID，即字段中的sid
+    private String PoiId;//	微信的门店ID，微信内门店唯一标示ID
+    private String Result;//	审核结果，成功succ 或失败fail
+    private String Msg;//	成功的通知信息，或审核失败的驳回理由
+
     public SendLocationInfo getSendLocationInfo() {
         return SendLocationInfo;
     }
@@ -332,5 +337,37 @@ public class RequestMessage {
 
     public void setErrorCount(Integer errorCount) {
         ErrorCount = errorCount;
+    }
+
+    public String getUniqId() {
+        return UniqId;
+    }
+
+    public void setUniqId(String uniqId) {
+        UniqId = uniqId;
+    }
+
+    public String getPoiId() {
+        return PoiId;
+    }
+
+    public void setPoiId(String poiId) {
+        PoiId = poiId;
+    }
+
+    public String getResult() {
+        return Result;
+    }
+
+    public void setResult(String result) {
+        Result = result;
+    }
+
+    public String getMsg() {
+        return Msg;
+    }
+
+    public void setMsg(String msg) {
+        Msg = msg;
     }
 }

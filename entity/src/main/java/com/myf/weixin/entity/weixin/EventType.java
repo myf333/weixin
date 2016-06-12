@@ -18,4 +18,5 @@ public enum EventType {
     location_select,//弹出地理位置选择器
     MASSSENDJOBFINISH,//事件推送群发结果
     TEMPLATESENDJOBFINISH,//事件推送模板消息结果
+    poi_check_notify,//新创建的门店在审核通过后，会以事件形式推送给商户填写的回调URL
 }
