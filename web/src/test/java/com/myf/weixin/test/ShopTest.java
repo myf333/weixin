@@ -29,12 +29,12 @@ public class ShopTest {
 
     final Logger logger  =  LoggerFactory.getLogger(getClass());
 
-    private final String appId = "wx110a29d26a064911";
-    private final String appSecret="6c944bb05e1aad5dd41d7b968c1a51a1";
+    private final String appId = "wxc3063aee2db008c0";
+    private final String appSecret="b4b58f2cdecc3037ac56704796275a37";
 
     @Test
     public void testGetCategory()throws Exception{
-        String accessToken = HttpUtil.Get(MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret),null);
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
         CategoryListRet ret = ShopService.getWxCategory(accessToken);
         Assert.assertNotNull(ret);
         Gson gson = new Gson();
@@ -43,14 +43,14 @@ public class ShopTest {
 
     @Test
     public void testGetShopList()throws Exception{
-        String accessToken = HttpUtil.Get(MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret),null);
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         ShopListRet ret = ShopService.getPoiList(accessToken,0,10);
         Assert.assertNotNull(ret);
     }
 
     @Test
     public void testGetShopInfo()throws Exception{
-        String accessToken = HttpUtil.Get(MessageFormat.format("http://dz.weixin.ltchanpin.cn/Home/gettoken?appid={0}&appsecret={1}",appId,appSecret),null);
+        String accessToken = tokenService.GetAccessToken(appId, appSecret);
         ShopListRet ret = ShopService.getPoiList(accessToken,0,10);
         Assert.assertNotNull(ret);
         String poiId = ret.getBusiness_list().get(0).getBase_info().getPoi_id();
