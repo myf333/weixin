@@ -324,9 +324,17 @@ public class MessageHandler {
             case TEMPLATESENDJOBFINISH:
                 responseMessage = OnEvent_TemplateSendJobFinishRequest(requestMessage);
                 break;
-            case poi_check_notify:
+            case poi_check_notify://门店审核
                 responseMessage = OnEvent_PoiCheckNotify(requestMessage);
                 break;
+            case card_pass_check://卡审核通过
+                responseMessage = OnEvent_CardCheck(requestMessage,true);
+                break;
+            case card_not_pass_check://卡审核不通过
+                responseMessage = OnEvent_CardCheck(requestMessage,false);
+                break;
+            case user_pay_from_pay_cell://买单事件
+                responseMessage = OnEvent_UserPayFromPayCell(requestMessage);
             default:
                 break;
         }
@@ -542,6 +550,30 @@ public class MessageHandler {
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
         responseMessage.setContent("接收到了模板消息发完成的信息。");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
+        return responseMessage;
+    }
+
+    /**
+     * 卡券审核事件推送
+     * **/
+    public ResponseMessageText OnEvent_CardCheck(RequestMessage requestMessage,boolean isPass){
+        ResponseMessageText responseMessage =
+                (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
+        responseMessage.setContent("接收到了卡券审核事件。");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
+        return responseMessage;
+    }
+
+    /**
+     * 买单事件推送
+     * **/
+    public ResponseMessageText OnEvent_UserPayFromPayCell(RequestMessage requestMessage){
+        ResponseMessageText responseMessage =
+                (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
+        responseMessage.setContent("接收到了买单事件。");
         Gson gson = new Gson();
         logger.info(gson.toJson(requestMessage));
         return responseMessage;

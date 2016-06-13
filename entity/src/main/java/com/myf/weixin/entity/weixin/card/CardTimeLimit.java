@@ -15,6 +15,14 @@ public class CardTimeLimit {
         this.type = type;
     }
 
+    public CardTimeLimit(CardTimeLimitType type, Integer begin_hour, Integer end_hour, Integer begin_minute, Integer end_minute) {
+        this.type = type;
+        this.begin_hour = begin_hour;
+        this.end_hour = end_hour;
+        this.begin_minute = begin_minute;
+        this.end_minute = end_minute;
+    }
+
     public CardTimeLimitType getType() {
         return type;
     }

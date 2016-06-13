@@ -19,4 +19,7 @@ public enum EventType {
     MASSSENDJOBFINISH,//事件推送群发结果
     TEMPLATESENDJOBFINISH,//事件推送模板消息结果
     poi_check_notify,//新创建的门店在审核通过后，会以事件形式推送给商户填写的回调URL
+    card_pass_check,//卡券审核通过
+    card_not_pass_check,//卡券审核不通过
+    user_pay_from_pay_cell,//买单事件推送
 }

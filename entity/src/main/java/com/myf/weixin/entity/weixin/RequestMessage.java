@@ -81,6 +81,14 @@ public class RequestMessage {
     private String Result;//	审核结果，成功succ 或失败fail
     private String Msg;//	成功的通知信息，或审核失败的驳回理由
 
+    private String CardId;//卡券审核事件推送/买单事件推送
+
+    private String UserCardCode;//卡券Code码。
+    private String TransId;//微信支付交易订单号（只有使用买单功能核销的卡券才会出现）
+    private String LocationId;//门店名称，当前卡券核销的门店名称（只有通过卡券商户助手和买单核销时才会出现）
+    private String Fee;//实付金额，单位为分
+    private String OriginalFee;//应付金额，单位为分
+
     public SendLocationInfo getSendLocationInfo() {
         return SendLocationInfo;
     }
@@ -369,5 +377,13 @@ public class RequestMessage {
 
     public void setMsg(String msg) {
         Msg = msg;
+    }
+
+    public String getCardId() {
+        return CardId;
+    }
+
+    public void setCardId(String cardId) {
+        CardId = cardId;
     }
 }
