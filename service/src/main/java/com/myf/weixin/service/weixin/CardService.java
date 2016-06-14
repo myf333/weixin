@@ -176,4 +176,16 @@ public class CardService {
         String res = HttpUtil.postJson(url,gson.toJson(request));
         return gson.fromJson(res,CardDepositCheckRet.class);
     }
+
+    /**
+     * 图文消息群发卡券
+     * 支持开发者调用该接口获取卡券嵌入图文消息的标准格式代码，将返回代码填入上传图文素材接口中content字段，即可获取嵌入卡券的图文消息素材。
+     * 特别注意：目前该接口仅支持填入非自定义code的卡券,自定义code的卡券需先进行code导入后调用。
+     * **/
+    public static CardHtmlRet getHtml(String accessToken,String cardId)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/card/mpnews/gethtml?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url,String.format("{\"card_id\" : \"%s\"}", cardId));
+        return gson.fromJson(res,CardHtmlRet.class);
+    }
 }
