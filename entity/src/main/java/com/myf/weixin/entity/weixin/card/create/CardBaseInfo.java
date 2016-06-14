@@ -1,4 +1,4 @@
-package com.myf.weixin.entity.weixin.card;
+package com.myf.weixin.entity.weixin.card.create;
 
 import java.util.List;
 

@@ -1,7 +1,9 @@
 package com.myf.weixin.test;
 
 import com.google.gson.Gson;
-import com.myf.weixin.entity.weixin.card.*;
+import com.myf.weixin.entity.weixin.card.create.*;
+import com.myf.weixin.entity.weixin.card.use.*;
+import com.myf.weixin.entity.weixin.qrcode.QrCodeRet;
 import com.myf.weixin.service.weixin.AccessTokenService;
 import com.myf.weixin.service.weixin.CardService;
 import org.junit.Assert;
@@ -15,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,6 +81,37 @@ public class CardTest {
 
         String accessToken = tokenService.GetAccessToken(appId,appSecret);
         CardCreateRet ret = CardService.createCard(accessToken,CardType.GROUPON,card);
+        Gson gson = new Gson();
+        logger.info(gson.toJson(ret));
+        Assert.assertNotNull(ret);
+    }
+
+    @Test
+    public void testCreateQrcode()throws Exception{
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        List<CardQrcodeInfo> list = new ArrayList<>();
+        CardQrcodeInfo qrcodeInfo = new CardQrcodeInfo("p-SzhjmRnuVla20AKuC4sfliL1IA",null);
+        qrcodeInfo.setOuter_id(1234567);
+        qrcodeInfo.setOuter_str("test123");
+        list.add(qrcodeInfo);
+        QrCodeRet ret = CardService.createQrcode(accessToken,null, CardQrcodeType.QR_CARD,list);
+        Gson gson = new Gson();
+        logger.info(gson.toJson(ret));
+        Assert.assertNotNull(ret);
+    }
+
+    @Test
+    public void testCreateLandingPage()throws Exception{
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        CardLandingRequest request = new CardLandingRequest();
+        request.setBanner("http://mmbiz.qpic.cn/mmbiz/p98FjXy8LacgHxp3sJ3vn97bGLz0ib0Sfz1bjiaoOYA027iasqSG0sjpiby4vce3AtaPu6cIhBHkt6IjlkY9YnDsfw/0");
+        request.setCan_share(true);
+        request.setPage_title("宝库大优惠");
+        request.setScene(CardSceneType.SCENE_H5);
+        List<CardLandingItem> list = new ArrayList<>();
+        list.add(new CardLandingItem("p-SzhjmRnuVla20AKuC4sfliL1IA","http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZJkmG8xXhiaHqkKSVMMWeN3hLut7X7hicFNjakmxibMLGWpXrEXB33367o7zHN0CwngnQY7zb7g/0"));
+        request.setCard_list(list);
+        CardLandingPageRet ret = CardService.createLandingPage(accessToken,request);
         Gson gson = new Gson();
         logger.info(gson.toJson(ret));
         Assert.assertNotNull(ret);

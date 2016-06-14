@@ -1,4 +1,4 @@
-package com.myf.weixin.entity.weixin.card;
+package com.myf.weixin.entity.weixin.card.create;
 
 /**
  * Created by myf on 2016/6/13.

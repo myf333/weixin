@@ -6,6 +6,8 @@ import com.myf.weixin.entity.weixin.qrcode.QrCodeRet;
 import com.myf.weixin.entity.weixin.qrcode.QrSceneType;
 import com.myf.weixin.util.HttpUtil;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.MessageFormat;
 
 /**
@@ -46,8 +48,8 @@ public class QrCodeService {
     /**
      * 通过ticket换取二维码
      * **/
-    public static String showQrCode(String ticket){
-        return MessageFormat.format("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}",ticket);
+    public static String showQrCode(String ticket) throws UnsupportedEncodingException{
+        return MessageFormat.format("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}", URLEncoder.encode(ticket,"UTF-8"));
     }
 
     /**
