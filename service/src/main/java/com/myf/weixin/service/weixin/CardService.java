@@ -188,4 +188,56 @@ public class CardService {
         String res = HttpUtil.postJson(url,String.format("{\"card_id\" : \"%s\"}", cardId));
         return gson.fromJson(res,CardHtmlRet.class);
     }
+
+    /**
+     *  设置测试白名单
+     *  由于卡券有审核要求，为方便公众号调试，可以设置一些测试帐号，这些帐号可领取未通过审核的卡券，体验整个流程。
+     *  开发者注意事项
+     *  1.同时支持“openid”、“username”两种字段设置白名单，总数上限为10个。
+     *  2.设置测试白名单接口为全量设置，即测试名单发生变化时需调用该接口重新传入所有测试人员的ID.
+     *  3.白名单用户领取该卡券时将无视卡券失效状态，请开发者注意。
+     *  openid		测试的openid列表。
+     *  username	测试的微信号列表。
+     * **/
+    public static WxJsonResult setTestWhiteList(String accessToken,List<String> openIds,List<String> names)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/card/testwhitelist/set?access_token={0}",accessToken);
+        Gson gson = new Gson();
+        JsonObject request = new JsonObject();
+        if(openIds!=null&&openIds.size()>0)request.add("openid",gson.toJsonTree(openIds));
+        if(names!=null&&names.size()>0)request.add("username",gson.toJsonTree(names));
+        String res = HttpUtil.postJson(url,gson.toJson(request));
+        return gson.fromJson(res,WxJsonResult.class);
+    }
+
+    /**
+     *  查询Code接口
+     *  code	单张卡券的唯一标准。
+     *  card_id    卡券ID代表一类卡券。自定义code卡券必填。
+     *  check_consume	是否校验code核销状态，填入true和false时的code异常状态返回数据不同。
+     *  注意事项：
+     *  1.固定时长有效期会根据用户实际领取时间转换，如用户2013年10月1日领取，固定时长有效期为90天，即有效时间为2013年10月1日-12月29日有效。
+     *  2.无论check_consume填写的是true还是false,当code未被添加或者code被转赠领取是统一报错：invalid serial code
+     * **/
+    public static CardStatusRet getCodeStatus(String accessToken,String cardId,String code,boolean check_consume)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/card/code/get?access_token={0}",accessToken);
+        String res = HttpUtil.postJson(url,String.format("{\"card_id\" : \"%s\",\"code\" : \"%s\",\"check_consume\" : %s}",cardId,code,String.valueOf(check_consume)));
+        Gson gson = new Gson();
+        return gson.fromJson(res,CardStatusRet.class);
+    }
+
+    /**
+     * 核销Code接口
+     * 消耗code接口是核销卡券的唯一接口,开发者可以调用当前接口将用户的优惠券进行核销，该过程不可逆。
+     * card_id 卡券ID。创建卡券时use_custom_code填写true时必填。非自定义Code不必填写。
+     *  code	需核销的Code码。
+     * **/
+    public static CardConsumeRet getCodeStatus(String accessToken,String cardId,String code)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/card/code/consume?access_token={0}",accessToken);
+        JsonObject request = new JsonObject();
+        request.addProperty("code",code);
+        if(cardId!=null&&!"".equals(cardId))request.addProperty("card_id",cardId);
+        Gson gson = new Gson();
+        String res = HttpUtil.postJson(url,gson.toJson(request));
+        return gson.fromJson(res,CardConsumeRet.class);
+    }
 }

@@ -89,6 +89,10 @@ public class RequestMessage {
     private String Fee;//实付金额，单位为分
     private String OriginalFee;//应付金额，单位为分
 
+    private int IsGiveByFriend;//是否为转赠，1代表是，0代表否。
+    private String OldUserCardCode;//转赠前的code序列号。
+    private int OuterId;//领取场景值，用于领取渠道数据统计。可在生成二维码接口及添加JS API接口中自定义该字段的整型值。
+
     public SendLocationInfo getSendLocationInfo() {
         return SendLocationInfo;
     }
@@ -385,5 +389,69 @@ public class RequestMessage {
 
     public void setCardId(String cardId) {
         CardId = cardId;
+    }
+
+    public String getUserCardCode() {
+        return UserCardCode;
+    }
+
+    public void setUserCardCode(String userCardCode) {
+        UserCardCode = userCardCode;
+    }
+
+    public String getTransId() {
+        return TransId;
+    }
+
+    public void setTransId(String transId) {
+        TransId = transId;
+    }
+
+    public String getLocationId() {
+        return LocationId;
+    }
+
+    public void setLocationId(String locationId) {
+        LocationId = locationId;
+    }
+
+    public String getFee() {
+        return Fee;
+    }
+
+    public void setFee(String fee) {
+        Fee = fee;
+    }
+
+    public String getOriginalFee() {
+        return OriginalFee;
+    }
+
+    public void setOriginalFee(String originalFee) {
+        OriginalFee = originalFee;
+    }
+
+    public int getIsGiveByFriend() {
+        return IsGiveByFriend;
+    }
+
+    public void setIsGiveByFriend(int isGiveByFriend) {
+        IsGiveByFriend = isGiveByFriend;
+    }
+
+    public String getOldUserCardCode() {
+        return OldUserCardCode;
+    }
+
+    public void setOldUserCardCode(String oldUserCardCode) {
+        OldUserCardCode = oldUserCardCode;
+    }
+
+    public int getOuterId() {
+        return OuterId;
+    }
+
+    public void setOuterId(int outerId) {
+        OuterId = outerId;
     }
 }

@@ -335,6 +335,9 @@ public class MessageHandler {
                 break;
             case user_pay_from_pay_cell://买单事件
                 responseMessage = OnEvent_UserPayFromPayCell(requestMessage);
+            case user_get_card:
+                responseMessage = OnEvent_UserGetCard(requestMessage);
+                break;
             default:
                 break;
         }
@@ -574,6 +577,15 @@ public class MessageHandler {
         ResponseMessageText responseMessage =
                 (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
         responseMessage.setContent("接收到了买单事件。");
+        Gson gson = new Gson();
+        logger.info(gson.toJson(requestMessage));
+        return responseMessage;
+    }
+
+    public ResponseMessageText OnEvent_UserGetCard(RequestMessage requestMessage){
+        ResponseMessageText responseMessage =
+                (ResponseMessageText)ResponseMessageBase.CreateFromRequestMessage(requestMessage,ResponseMsgType.text);
+        responseMessage.setContent("接收到了卡券领取事件。");
         Gson gson = new Gson();
         logger.info(gson.toJson(requestMessage));
         return responseMessage;

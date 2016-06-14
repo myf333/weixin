@@ -1,11 +1,13 @@
 package com.myf.weixin.test;
 
 import com.google.gson.Gson;
+import com.myf.weixin.entity.weixin.WxJsonResult;
 import com.myf.weixin.entity.weixin.card.create.*;
 import com.myf.weixin.entity.weixin.card.use.*;
 import com.myf.weixin.entity.weixin.qrcode.QrCodeRet;
 import com.myf.weixin.service.weixin.AccessTokenService;
 import com.myf.weixin.service.weixin.CardService;
+import com.myf.weixin.util.CheckSignature;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -115,5 +117,26 @@ public class CardTest {
         Gson gson = new Gson();
         logger.info(gson.toJson(ret));
         Assert.assertNotNull(ret);
+    }
+
+    @Test
+    public void testCardApiTicketSign()throws Exception{
+        //String cardApiTicket = tokenService.GetCardApiTicket(appId,appSecret);
+        String code="jonyqin_1434008071";
+        String timestamp="1404896688";
+        String card_id="pjZ8Yt1XGILfi-FUsewpnnolGgZk";
+        String api_ticket="ojZ8YtyVyr30HheH3CM73y7h4jJE";
+        String nonce_str="jonyqin";
+        String str = CheckSignature.GetCardSignature(code,timestamp,card_id,nonce_str,api_ticket,null,null);
+        Assert.assertEquals("2b4d29b5f60fa4be37522ddfd9583c329446d3e3",str);
+    }
+
+    @Test
+    public void testSetTestWhiteList()throws Exception{
+        String accessToken = tokenService.GetAccessToken(appId,appSecret);
+        List<String> list = new ArrayList<>();
+        list.add("o-SzhjpT1RWYi170nd9LwKXHj7-o");
+        WxJsonResult ret = CardService.setTestWhiteList(accessToken,list,null);
+        Assert.assertEquals(0,ret.getErrcode());
     }
 }

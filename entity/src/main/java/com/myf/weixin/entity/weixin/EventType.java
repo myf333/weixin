@@ -22,4 +22,5 @@ public enum EventType {
     card_pass_check,//卡券审核通过
     card_not_pass_check,//卡券审核不通过
     user_pay_from_pay_cell,//买单事件推送
+    user_get_card,//卡券领取事件
 }
