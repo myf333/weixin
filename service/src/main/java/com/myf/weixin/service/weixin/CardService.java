@@ -3,6 +3,7 @@ package com.myf.weixin.service.weixin;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.myf.weixin.entity.weixin.WxJsonResult;
+import com.myf.weixin.entity.weixin.card.use.CardCodeRet;
 import com.myf.weixin.entity.weixin.card.create.CardCreateRet;
 import com.myf.weixin.entity.weixin.card.create.CardInfoBase;
 import com.myf.weixin.entity.weixin.card.create.CardType;
@@ -239,5 +240,18 @@ public class CardService {
         Gson gson = new Gson();
         String res = HttpUtil.postJson(url,gson.toJson(request));
         return gson.fromJson(res,CardConsumeRet.class);
+    }
+
+    /**
+     * Code解码接口
+     * code解码接口支持两种场景：
+     *  1.商家获取choos_card_info后，将card_id和encrypt_code字段通过解码接口，获取真实code。
+     *  2.卡券内跳转外链的签名中会对code进行加密处理，通过调用解码接口获取真实code。
+     * **/
+    public static CardCodeRet decrypt(String accessToken,String encrypt_code)throws Exception{
+        String url = MessageFormat.format("https://api.weixin.qq.com/card/code/decrypt?access_token={0}",accessToken);
+        String res = HttpUtil.postJson(url,String.format("{\"encrypt_code\":\"%s\"}",encrypt_code));
+        Gson gson = new Gson();
+        return gson.fromJson(res,CardCodeRet.class);
     }
 }
