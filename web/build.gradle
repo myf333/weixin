@@ -52,5 +52,5 @@ task('jarPath')<<{
     configurations.runtime.resolve().each {
         print it.toString()+";"
     }
-    println();
+    println()
 }  

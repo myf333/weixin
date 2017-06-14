@@ -53,6 +53,9 @@ public class CardService {
             case GENERAL_COUPON:
                 cardName = "general_coupon";
                 break;
+            case MEMBER_CARD:
+                cardName = "member_card";
+                break;
         }
         Gson gson = new Gson();
         String json = String.format("{\"card\": {\"card_type\": \"%s\",\"%s\":%s}}",type.toString(),cardName,gson.toJson(cardInfo));

@@ -31,7 +31,7 @@ subprojects {
         compile(
                 "org.springframework:spring-context:$springVersion"
         )
-        // 依赖mave中不存在的jar
+        // 依赖maven中不存在的jar
         ext.jarTree = fileTree(dir: 'libs', include: '**/*.jar')
         ext.rootProjectLibs = new File(rootProject.rootDir, 'libs').getAbsolutePath()
         ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')

@@ -9,4 +9,5 @@ public enum CardType {
     DISCOUNT,//折扣券
     GIFT,//兑换券
     GENERAL_COUPON,//优惠券
+    MEMBER_CARD,//会员卡
 }
